@@ -1,0 +1,56 @@
+* {
+    font-family: Inconsolata,"Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+p{
+    margin: 5px;
+}
+.header{
+    padding:30px;
+    background-color: cornflowerblue;
+    margin-bottom: 20px;
+}
+
+form{
+    display: inline-block;
+	button{
+		padding: 5px;
+		color:  #FFFFFF;
+		background-color: rgba(52, 152, 52, 0.7);
+		margin-left: 5px;
+		&:hover{
+			background-color: rgba(75,175,80,1);
+		}
+	}
+	input[type=number]{
+		width: 100px;
+	}	
+}
+
+@media screen and (max-width:500px) {
+    /* Mobile styles */
+    .container{
+        position: relative;
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+}
+@media screen and (min-width:501px) and (max-width:999px) {
+    /* Tablet styles */
+    .container{
+        position: relative;
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+}
+@media screen and (min-width:1000px) {
+    /* Desktop styles */
+    .container{
+        position: relative;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+
+    }
+}
