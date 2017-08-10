@@ -1,3 +1,8 @@
+$color-light-green: rgba(52, 152, 52, 0.7);
+$color-normal-green: rgba(75,175,80,1);
+$color-white: rgba(255,255,255,1);
+$color-light-grey: rgba(204,204,204,1);
+$input-min-width: 172px;
 * {
     font-family: Inconsolata,"Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -11,15 +16,44 @@ p{
 }
 
 form{
-    display: inline-block;
+    display: flex;
+	flex-flow: column wrap;
+	div{
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-end;
+		margin-bottom: 5px;
+	}
+	#age-range{
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		min-width: $input-min-width;
+	}
+	#gendre{
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		min-width: $input-min-width;
+	}
+	select{
+		min-width: 70px;
+	}
+	label{
+		margin: 0 5px;
+	}
 	button{
 		padding: 5px;
-		color:  #FFFFFF;
-		background-color: rgba(52, 152, 52, 0.7);
-		margin-left: 5px;
+		color:  $color-white;
+		background-color: $color-light-green;
+		margin: 5px 5px;
+		border-radius: 5px;
 		&:hover{
-			background-color: rgba(75,175,80,1);
+			background-color: $color-normal-green;
 		}
+		&:disabled{
+			background: $color-light-grey;
+      }
 	}
 	input[type=number]{
 		width: 100px;

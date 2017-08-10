@@ -98,7 +98,10 @@ angular.module('formLogic')
         templateUrl: './templates/form-logic.html',
         controller: function($scope){
             
-            $scope.testVar = "Appness";
+			$scope.testVar = "Appness";
+			$scope.ageRange = [...Array(100).keys()].slice(1);
+			$scope.genders = ['Male','Female'];
+			
            
         }
     });
