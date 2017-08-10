@@ -21,14 +21,14 @@ form {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    min-width: 172px; }
+    min-width: 150px; }
   form #gendre {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    min-width: 172px; }
+    min-width: 150px; }
   form select {
-    min-width: 70px; }
+    min-width: 58px; }
   form label {
     margin: 0 5px; }
   form button {

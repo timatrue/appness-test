@@ -1,29 +1,24 @@
-<div class=''>
+<div class="">
     <form>
-            <div><label>Account token:</label><input type='text' id='token' required></div>
-			<div><label>Ad account:</label><input type='text' id='account' required></div>
-			<div><label>Country:</label><input type='text' id='country' required></div>
+            <div><label>Account token:</label><input type="text" id="token" required></div>
+			<div><label>Ad account:</label><input type="text" id="account" required></div>
+			<div><label>Country:</label><input type="text" id="country" required></div>
 			<div >
 				<label>Age From:</label>
-				<div id='age-range'>
-					<select id='min-age' ng-model='minAge'>
-						<option  ng-repeat='age in ageRange' ng-disabled='age > maxAge'>{{age}}</option>
-					</select>
+				<div id="age-range">
+					<select id="min-age" ng-options="age disable when (restrictMin(age,defaultMax)) for age in ageRange" ng-model="defaultMin"></select>
 					<label>To:</label>
-					<select id='max-age' ng-model='maxAge' >
-						<option ng-repeat='age in ageRange' ng-disabled='age < minAge'>{{age}}</option>
-					</select>
+					<select id="max-age" ng-options="age disable when (restrictMax(age,defaultMin)) for age in ageRange" ng-model="defaultMax"></select>
 				</div>
 			</div>
 			<div >
 				<label>Gender:</label>
-				<div id='gendre'>
-					<select  ng-model='selectedGender'>
-						<option ng-repeat='gender in genders'>{{gender}}</option>
+				<div id="gendre">
+					<select  ng-model="selectedGender">
+						<option ng-repeat="gender in genders">{{gender}}</option>
 					</select>
 				</div>
 			</div>
-            <div><button type='submit' >{{testVar}}</button></div>
     </form>
 </div>
 
