@@ -1,8 +1,15 @@
 <div class="">
-    <form>
-            <div><label>Account token:</label><input type="text" id="token" required></div>
-			<div><label>Ad account:</label><input type="text" id="account" required></div>
-			<div><label>Country:</label><input type="text" id="country" required></div>
+    <form  autocomplete="off">
+            <div><label>Account token:</label><input type="text" id="token" ng-model="formData.token" required></div>
+			<div><label>Ad account:</label><input type="text" id="account" ng-model="formData.account" required></div>
+			<div>
+				<label>Country:</label>
+				<div id="country-container">
+					<input type="text" id="country" ng-model="countryQuery" ng-change="isCountryValid(countryQuery)" required>
+					<div id="country-list" ><ul ng-show="countryQuery" ng-if="showDropDown"><li ng-click="addCountry(country)" ng-repeat="country in countryList | filter: countryQuery"  ng-show="$index < 10">{{country}}</li><ul></div>
+				</div>
+			</div>
+			
 			<div >
 				<label>Age From:</label>
 				<div id="age-range">

@@ -10,31 +10,64 @@ $select-min-width: 58px;
 p{
     margin: 5px;
 }
+ul{
+	list-style-type: none;
+	font-size: 14px;
+	margin: 0;
+    padding: 0;
+	background-color: $color-white;
+	border: 1px solid $color-light-grey;
+	li{
+		
+		&:hover {
+			background-color: $color-light-grey;
+			cursor: pointer;
+		}
+	}
+}
 .header{
     padding:30px;
     background-color: cornflowerblue;
     margin-bottom: 20px;
 }
 form{
+	position: relative;
     display: flex;
 	flex-flow: column wrap;
-	div{
+	div:not(#country-container):not(#country-list):not(#gendre){
+		position: relative;
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: flex-end;
 		margin-bottom: 5px;
 	}
+	#country-container{
+		position: relative;
+		display: flex;
+		flex-flow: column wrap;
+		width: $input-min-width;	
+		z-index: 9999;
+		#country-list{
+			position: absolute;
+			top: 19px; right: 0; bottom: 0; left: 0;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: flex-start;
+		}
+	}
 	#age-range{
+		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: flex-start;
 		min-width: $input-min-width;
 	}
 	#gendre{
+		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: flex-start;
-		min-width: $input-min-width;
+		width: $input-min-width;
 	}
 	select{
 		min-width: $select-min-width;
