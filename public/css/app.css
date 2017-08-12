@@ -10,7 +10,8 @@ ul {
   margin: 0;
   padding: 0;
   background-color: white;
-  border: 1px solid #cccccc; }
+  border: 1px solid #cccccc;
+  width: 150px; }
   ul li:hover {
     background-color: #cccccc;
     cursor: pointer; }
@@ -24,18 +25,37 @@ form {
   position: relative;
   display: flex;
   flex-flow: column wrap; }
-  form div:not(#country-container):not(#country-list):not(#gendre) {
+  form select {
+    min-width: 58px; }
+  form label {
+    margin: 0 5px; }
+  form button {
+    padding: 5px;
+    color: white;
+    background-color: rgba(52, 152, 52, 0.7);
+    margin: 5px 5px;
+    border-radius: 5px; }
+    form button:hover {
+      background-color: #4baf50; }
+    form button:disabled {
+      background: #cccccc; }
+  form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) {
     position: relative;
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
     margin-bottom: 5px; }
+    form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div {
+      width: 150px; }
+      form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div #token, form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div #account {
+        width: 100%; }
   form #country-container {
     position: relative;
     display: flex;
     flex-flow: column wrap;
     width: 150px;
-    z-index: 9999; }
+    z-index: 9999;
+    margin-bottom: 5px; }
     form #country-container #country-list {
       position: absolute;
       top: 19px;
@@ -57,22 +77,21 @@ form {
     flex-flow: row nowrap;
     justify-content: flex-start;
     width: 150px; }
-  form select {
-    min-width: 58px; }
-  form label {
-    margin: 0 5px; }
-  form button {
-    padding: 5px;
-    color: white;
-    background-color: rgba(52, 152, 52, 0.7);
-    margin: 5px 5px;
-    border-radius: 5px; }
-    form button:hover {
-      background-color: #4baf50; }
-    form button:disabled {
-      background: #cccccc; }
-  form input[type=number] {
-    width: 100px; }
+  form .error {
+    font-size: 10px;
+    color: red; }
+  form .reset-input {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    background: url(//yastatic.net/islands/_/nJL92_8XGrQ8WN7LePOnzmpHzd4.svg) no-repeat 0 0;
+    opacity: 0.3; }
+    form .reset-input:hover {
+      opacity: 0.3; }
 
 @media screen and (max-width: 500px) {
   /* Mobile styles */
