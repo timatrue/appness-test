@@ -4,35 +4,44 @@ angular.module('formLogic',['formService'])
         controller: function ($scope, formHttpService){
 			$scope.credentials = false;
             $scope.formData = {};
-			$scope.ageRange = [...Array(100).keys()].map(value => String(value)).slice(1);
+			$scope.ageRange = [...Array(66).keys()].map(value => String(value)).slice(13);
 			$scope.defaultMin = $scope.ageRange[0];
 			$scope.defaultMax = $scope.ageRange.slice(-1)[0];
 			$scope.restrictMin = (age,defaultMax)=> Number(age) > Number(defaultMax);
 			$scope.restrictMax = (age,defaultMin)=> Number(age) < Number(defaultMin);
-			$scope.genders = ['All','Male','Female'];
+			$scope.genders = [{name:'All',value:[1,2]},{name:'Male',value:[1]},{name:'Female',value:[2]}];
 			$scope.selectedGender = $scope.genders[0];
-			$scope.countryValid = false;
-			
-			$scope.cleanInput = function(input){
-				formData[input] = "";
-			}
+			$scope.countryValid = false;		
 			$scope.addCountry = function(country){
-				console.log("click", country);
-				$scope.countryQuery = country;
+				
+				$scope.countryQuery = country.value;
+				console.log($scope.countryQuery)
 				$scope.isCountryValid();
 			}
+			$scope.removeCountry = function(country){
+				$scope.countryQuery = null;
+				$scope.countryValid = false;
+			}
+			$scope.hideDropDown = function(list){
+				let show = false;
+				if($scope.countryQuery) show = list.length ? true : false;
+				if($scope.countryValid) show = false;
+				return show;	
+			}
 			$scope.isCountryValid = function(){
-				if($scope.countryQuery !== undefined){
-					let filtered = $scope.countryList.filter((country)=> country.toLowerCase() === $scope.countryQuery.toLowerCase());
-					$scope.formData.country = filtered.length ? filtered[0] : "";
+				if($scope.countryQuery){
+					let filtered = $scope.countryList.filter((country)=> country.value.toLowerCase() === $scope.countryQuery.toLowerCase());
+					$scope.formData.country = filtered.length ? filtered[0].key : "";
 					$scope.countryValid = filtered.length ?  true : false;
 					if($scope.countryValid) $scope.onChange();
+				} else {
+					$scope.countryValid = false;
 				}
 			}
-			
 			$scope.onChange = function(){
 				$scope.formData.min = $scope.defaultMin;
 				$scope.formData.max = $scope.defaultMax;
+				$scope.formData.genders = $scope.selectedGender.value;
 				if($scope.myForm.$valid && $scope.countryValid) {
 					formHttpService.isAccountValid($scope.formData.account, $scope.formData.token)
 					.then(function(data){
@@ -41,14 +50,13 @@ angular.module('formLogic',['formService'])
 							$scope.requestAPI();
 						}
 						else $scope.credentials = false;
-					});
-				};
-			};
-			
-			
+					})
+				}
+			}		
 			$scope.credentialsError = function(){
 				if($scope.myForm.$valid) {
 					if($scope.countryValid) return $scope.credentials ? "" : "Wrong Account or Token";
+					else return "Fill the form";
 				}
 				return "Fill the form";
 			}
@@ -56,18 +64,23 @@ angular.module('formLogic',['formService'])
 				let min = $scope.formData.min;
 				let max = $scope.formData.max;
 				let country = $scope.formData.country;
-				formHttpService.setParams(min, max, country);
-				console.log('requestAPI',$scope.formData, $scope.myForm.$valid)
+				let genders = $scope.selectedGender.value;
+				formHttpService.setParams(min, max, country, genders);
+				formHttpService.getFirefighters($scope.formData.token, $scope.formData.account)
+					.then(function(data){
+						if(data !== null) {
+							console.log("firefighters",data);
+						}
+					});
 			}
 			$scope.countries = ()=> {
 				formHttpService.getCountries()
-				.then(function(data) {
-					$scope.countryData = data;
-					console.log(data)
-					$scope.countryList = data.data.map(data => data.name);
+				.then(function(countries) {
+					$scope.countryData = countries;
+					console.log("list of countries", countries)
+					$scope.countryList = countries.data.map(country => {return {value:country.name,key:country.key}});
 				});	
 			}
-			$scope.countries();
-			
+			$scope.countries();	
         }
     });

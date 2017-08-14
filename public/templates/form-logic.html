@@ -6,8 +6,8 @@
 			<div>
 				<label>Country:</label>
 				<div id="country-container">
-					<input type="text" id="country" ng-model="countryQuery" ng-change="isCountryValid(countryQuery)"><a  ng-show="countryQuery" class="reset-input"  ng-click="countryQuery = null"></a>
-					<div id="country-list" ><ul ng-show="countryQuery" ng-if="!countryValid"><li ng-click="addCountry(country)" ng-repeat="country in countryList | filter: countryQuery"  ng-show="$index < 10">{{country}}</li><ul></div>
+					<input type="text" id="country" ng-focus="focused=true" ng-blur="focused=false" ng-model="countryQuery" ng-change="isCountryValid(countryQuery)" ><a  ng-show="countryQuery" class="reset-input"  ng-click="removeCountry()"></a>
+					<div id="country-list" ><ul ng-show="hideDropDown($parent.filteredList)"><li ng-click="addCountry(country)" ng-repeat="country in $parent.filteredList = (countryList | filter: countryQuery)" ng-show="$index < 50">{{country.value}}</li><ul></div>
 				</div>
 			</div>
 			
@@ -22,8 +22,8 @@
 			<div >
 				<label>Gender:</label>
 				<div id="gendre">
-					<select ng-change="onChange()" ng-model="selectedGender">
-						<option  ng-repeat="gender in genders" >{{gender}}</option>
+					<select ng-change="onChange()"  ng-options="gender as gender.name for gender in genders track by gender.value" ng-model="selectedGender">
+						<option  ng-repeat="gender in genders>{{gender.name}}</option>
 					</select>
 				</div>
 			</div>

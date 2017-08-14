@@ -21,8 +21,7 @@ ul{
 	background-color: $color-white;
 	border: 1px solid $color-light-grey;
 	width: $input-min-width;
-	li{
-		
+	li{		
 		&:hover {
 			background-color: $color-light-grey;
 			cursor: pointer;
@@ -38,6 +37,11 @@ form{
 	position: relative;
     display: flex;
 	flex-flow: column wrap;
+	input{
+		box-sizing: border-box;
+		padding-right: 18px;
+		width: $input-min-width;
+	}
 	select{
 		min-width: $select-min-width;
 	}
@@ -57,8 +61,6 @@ form{
 			background: $color-light-grey;
       }
 	}	
-	
-	
 	div:not(#country-container):not(#country-list):not(#gendre):not(#country-input){
 		position: relative;
 		display: flex;
@@ -78,14 +80,16 @@ form{
 		flex-flow: column wrap;
 		width: $input-min-width;	
 		z-index: 9999;
-		margin-bottom: 5px;
-		
+		margin-bottom: 5px;	
 		#country-list{
 			position: absolute;
 			top: 19px; right: 0; bottom: 0; left: 0;
 			display: flex;
 			flex-flow: column nowrap;
 			justify-content: flex-start;
+			overflow: hidden;
+			height: 150px;
+			overflow-y: auto;
 		}
 	}
 	#age-range{
@@ -117,12 +121,10 @@ form{
 		background: url(//yastatic.net/islands/_/nJL92_8XGrQ8WN7LePOnzmpHzd4.svg) no-repeat 0 0;
 		opacity: 0.3;
 		&:hover{
-			opacity: 0.3;
+			opacity: 0.5;
 		}
-	}
-	
+	}	
 }
-
 @media screen and (max-width:500px) {
     /* Mobile styles */
     .container{
