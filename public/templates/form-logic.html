@@ -1,5 +1,5 @@
-<div class="">
-    <form  name="myForm" autocomplete="off">
+<div>
+    <form name="myForm" autocomplete="off">
 			<div><label class="error">{{credentialsError()}}</label></div>
             <div><label>Account token:</label><div><input type="text" id="token" ng-change="onChange()" ng-model="formData.token"  required><a  ng-show="formData.token" class="reset-input"  ng-click="formData.token = null"></a></div></div>
 			<div><label>Ad account:</label><div><input type="text" id="account" ng-change="onChange()" ng-model="formData.account" required><a  ng-show="formData.account" class="reset-input"  ng-click="formData.account = null"></a></div></div>
@@ -7,7 +7,7 @@
 				<label>Country:</label>
 				<div id="country-container">
 					<input type="text" id="country" ng-focus="focused=true" ng-blur="focused=false" ng-model="countryQuery" ng-change="isCountryValid(countryQuery)" ><a  ng-show="countryQuery" class="reset-input"  ng-click="removeCountry()"></a>
-					<div id="country-list" ><ul ng-show="hideDropDown($parent.filteredList)"><li ng-click="addCountry(country)" ng-repeat="country in $parent.filteredList = (countryList | filter: countryQuery)" ng-show="$index < 50">{{country.value}}</li><ul></div>
+					<div id="country-list" ><ul ng-show="hideDropDown($parent.filteredList)"><li ng-click="addCountry(country)" ng-repeat="country in $parent.filteredList = (countryList | filter: countryQuery)" ng-show="$index < 10">{{country.value}}</li><ul></div>
 				</div>
 			</div>
 			
@@ -23,11 +23,13 @@
 				<label>Gender:</label>
 				<div id="gendre">
 					<select ng-change="onChange()"  ng-options="gender as gender.name for gender in genders track by gender.value" ng-model="selectedGender">
-						<option  ng-repeat="gender in genders>{{gender.name}}</option>
+						<option  ng-repeat="gender in genders">{{gender.name}}</option>
 					</select>
 				</div>
 			</div>
+			<div id="req-results"> <label>Results:</label><div><form-spinner></form-spinner></div></div>
     </form>
+	
 </div>
 
 

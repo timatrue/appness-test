@@ -43,22 +43,21 @@ form {
       background-color: #4baf50; }
     form button:disabled {
       background: #cccccc; }
-  form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) {
+  form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) {
     position: relative;
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
     margin-bottom: 5px; }
-    form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div {
+    form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div {
       width: 150px; }
-      form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div #token, form div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) div #account {
+      form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div #token, form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div #account {
         width: 100%; }
   form #country-container {
     position: relative;
     display: flex;
     flex-flow: column wrap;
     width: 150px;
-    z-index: 9999;
     margin-bottom: 5px; }
     form #country-container #country-list {
       position: absolute;
@@ -69,9 +68,7 @@ form {
       display: flex;
       flex-flow: column nowrap;
       justify-content: flex-start;
-      overflow: hidden;
-      height: 150px;
-      overflow-y: auto; }
+      z-index: 9999; }
   form #age-range {
     position: relative;
     display: flex;
@@ -123,3 +120,45 @@ form {
     display: flex;
     flex-flow: row wrap;
     justify-content: center; } }
+
+.spinner-container {
+  display: inline-flex; }
+  .spinner-container .spinner {
+    margin: 0 2px;
+    height: 18px;
+    text-align: center;
+    font-size: 8px; }
+  .spinner-container .spinner > div {
+    background-color: #3498DB;
+    height: 100%;
+    margin: 0 2px;
+    width: 5px;
+    display: inline-block;
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out; }
+  .spinner-container .spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s; }
+  .spinner-container .spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s; }
+  .spinner-container .spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s; }
+  .spinner-container .spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s; }
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.5); }
+  20% {
+    -webkit-transform: scaleY(0.9); } }
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.5);
+    -webkit-transform: scaleY(0.5); }
+  20% {
+    transform: scaleY(0.9);
+    -webkit-transform: scaleY(0.9); } }

@@ -1,9 +1,9 @@
 angular.module('formLogic',['formService'])
     .component('formLogic',{
         templateUrl: './templates/form-logic.html',
-        controller: function ($scope, formHttpService){
+        controller: function ($scope, $rootScope, formHttpService){
 			$scope.credentials = false;
-            $scope.formData = {};
+            $scope.formData = {query:'Fire Fighter'};
 			$scope.ageRange = [...Array(66).keys()].map(value => String(value)).slice(13);
 			$scope.defaultMin = $scope.ageRange[0];
 			$scope.defaultMax = $scope.ageRange.slice(-1)[0];
@@ -11,7 +11,10 @@ angular.module('formLogic',['formService'])
 			$scope.restrictMax = (age,defaultMin)=> Number(age) < Number(defaultMin);
 			$scope.genders = [{name:'All',value:[1,2]},{name:'Male',value:[1]},{name:'Female',value:[2]}];
 			$scope.selectedGender = $scope.genders[0];
-			$scope.countryValid = false;		
+			$scope.countryValid = false;
+			$scope.result = 0;
+			$scope.pending = false;
+			
 			$scope.addCountry = function(country){
 				
 				$scope.countryQuery = country.value;
@@ -65,12 +68,22 @@ angular.module('formLogic',['formService'])
 				let max = $scope.formData.max;
 				let country = $scope.formData.country;
 				let genders = $scope.selectedGender.value;
-				formHttpService.setParams(min, max, country, genders);
+				let query = $scope.formData.query;
+				$rootScope.$broadcast('pending', {result: true});
+				formHttpService.setParams(min, max, country, genders, query);
 				formHttpService.getFirefighters($scope.formData.token, $scope.formData.account)
-					.then(function(data){
-						if(data !== null) {
-							console.log("firefighters",data);
+					.then(function(estimation){
+						
+						if(estimation !== null) {
+							console.log("firefighters",);
+							$scope.result = estimation.data.users;
+						} else {
+							$scope.result = "Wrong Request";
 						}
+						$scope.pending = false;
+						$rootScope.$broadcast('result', {result: $scope.result});
+						$rootScope.$broadcast('pending', {result: false});
+						
 					});
 			}
 			$scope.countries = ()=> {

@@ -68,8 +68,10 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 let formLogicComponent = __webpack_require__(1);
-let formServiceComponent = __webpack_require__(2);
-let scss = __webpack_require__(3);
+let formSpinnerComponent = __webpack_require__(2);
+let formServiceComponent = __webpack_require__(3);
+
+let scss = __webpack_require__(4);
 
 angular.module('appNess', ['formLogic'])
 
@@ -83,9 +85,9 @@ angular.module('appNess', ['formLogic'])
 angular.module('formLogic',['formService'])
     .component('formLogic',{
         templateUrl: './templates/form-logic.html',
-        controller: function ($scope, formHttpService){
+        controller: function ($scope, $rootScope, formHttpService){
 			$scope.credentials = false;
-            $scope.formData = {};
+            $scope.formData = {query:'Fire Fighter'};
 			$scope.ageRange = [...Array(66).keys()].map(value => String(value)).slice(13);
 			$scope.defaultMin = $scope.ageRange[0];
 			$scope.defaultMax = $scope.ageRange.slice(-1)[0];
@@ -93,7 +95,10 @@ angular.module('formLogic',['formService'])
 			$scope.restrictMax = (age,defaultMin)=> Number(age) < Number(defaultMin);
 			$scope.genders = [{name:'All',value:[1,2]},{name:'Male',value:[1]},{name:'Female',value:[2]}];
 			$scope.selectedGender = $scope.genders[0];
-			$scope.countryValid = false;		
+			$scope.countryValid = false;
+			$scope.result = 0;
+			$scope.pending = false;
+			
 			$scope.addCountry = function(country){
 				
 				$scope.countryQuery = country.value;
@@ -147,12 +152,22 @@ angular.module('formLogic',['formService'])
 				let max = $scope.formData.max;
 				let country = $scope.formData.country;
 				let genders = $scope.selectedGender.value;
-				formHttpService.setParams(min, max, country, genders);
+				let query = $scope.formData.query;
+				$rootScope.$broadcast('pending', {result: true});
+				formHttpService.setParams(min, max, country, genders, query);
 				formHttpService.getFirefighters($scope.formData.token, $scope.formData.account)
-					.then(function(data){
-						if(data !== null) {
-							console.log("firefighters",data);
+					.then(function(estimation){
+						
+						if(estimation !== null) {
+							console.log("firefighters",);
+							$scope.result = estimation.data.users;
+						} else {
+							$scope.result = "Wrong Request";
 						}
+						$scope.pending = false;
+						$rootScope.$broadcast('result', {result: $scope.result});
+						$rootScope.$broadcast('pending', {result: false});
+						
 					});
 			}
 			$scope.countries = ()=> {
@@ -170,6 +185,27 @@ angular.module('formLogic',['formService'])
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+angular.module('formLogic')
+    .component('formSpinner',{
+        templateUrl: './templates/form-spinner.html',
+        controller: function ($scope){
+			$scope.result = 0;
+			$scope.pending = false;
+			
+			$scope.$on('result', (event, params) => {
+				$scope.result = params.result;
+			});
+			$scope.$on('pending', (event, params) => {
+				$scope.pending = params.result;
+			});
+        }
+    });
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 angular.module('formService',[])
@@ -199,8 +235,11 @@ angular.module('formService',[])
 					return arg.map( param => '&' + Object.keys(param) + '=' + Object.values(param)).join('')
 				}).join('')	
 			},
-			searchParams: ()=>{
+			geoParams: ()=>{
 				return [{type:'adgeolocation'},{location_types:['country']},{limit:1000}];
+			},
+			searchParams: (query)=>{
+				return [{type:'adworkposition'},{q:query}];
 			},
 			credParams: ()=>{
 				return [{access_token:"EAAcOZAxkM5moBAFZBZA5aYG2cpwwiMCBC6sYLNYATPHzCShTMApqYUV3YXtBZBbKQxY5bH21RTdMnZCEv0lDp6W3q0FZAhZCOpSVDaLIgFOCc2gj6msyqhhKBQZCd6GkqFAyChQZAbEhSKrVUnLRuiryPgJaVCk5wguH3gTaTBmNHrAZDZD"}];
@@ -215,25 +254,38 @@ angular.module('formService',[])
 				return [{access_token:token}];
 			}
 		};
+		let queryManager = {
+			query: ""
+		}
 		let urlService = {
 			getCountries: function() {
 				let manager = urlManager;
-				let url = manager.getBaseUrl(manager.search()) + manager.getParams(manager.searchParams(), manager.credParams())
+				let url = manager.getBaseUrl(manager.search()) + manager.getParams(manager.geoParams(), manager.credParams())
 				console.log("url", url);
 				let promise = $http.get(url).then((response)=> response.data);
 				return promise;
 			},
-			setParams: (min, max, country, genders)=>{
+			setParams: (min, max, country, genders, query)=>{
 				targetManager.age_min = min;
 				targetManager.age_max = max;
 				targetManager.genders = genders;
 				targetManager.geo_locations.countries = [country];
+				queryManager.query = query;
 			},
 			getFirefighters: function(token, account) {
 				let manager = urlManager;
-				let url = manager.getBaseUrl(account, manager.estimate()) + manager.getParams(manager.targetParams(), manager.guestToken(token));
-				console.log("getFirefighters",url)
-				let promise = $http.get(url).then((response)=> response.data, error => null);
+				let query = queryManager.query;
+				let urlSearch = manager.getBaseUrl(manager.search())+ manager.getParams(manager.searchParams(query), manager.guestToken(token))
+				
+				let promise = $http.get(urlSearch).then(response=> {
+					return response.data.data.filter(result => result.name === query)
+					.map(result => {return {name:result.name,id:result.id}});
+				}, error => null).then(result=>{
+					targetManager.flexible_spec[0].work_positions = result;
+					let urlFire = manager.getBaseUrl(account, manager.estimate()) + manager.getParams(manager.targetParams(), manager.guestToken(token));
+					console.log("urlFire", urlFire)
+					return $http.get(urlFire).then(response => response.data, error => null)
+				})
 				return promise;
 			},
 			isAccountValid: (account, token)=>{
@@ -248,7 +300,7 @@ angular.module('formService',[])
     });
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
