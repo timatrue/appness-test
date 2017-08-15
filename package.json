@@ -2,10 +2,10 @@
   "name": "appness",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "author": "trushinskiy.a",
   "license": "ISC",
@@ -17,5 +17,6 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.5.1"
-  }
+  },
+  "dependencies": {}
 }

@@ -67,11 +67,10 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let formLogicComponent = __webpack_require__(1);
-let formSpinnerComponent = __webpack_require__(2);
-let formServiceComponent = __webpack_require__(3);
-
-let scss = __webpack_require__(4);
+__webpack_require__(1);
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(4);
 
 angular.module('appNess', ['formLogic'])
 
@@ -97,10 +96,12 @@ angular.module('formLogic',['formService'])
 			$scope.selectedGender = $scope.genders[0];
 			$scope.countryValid = false;
 			$scope.result = 0;
+			$scope.getResult = function(){
+				return $scope.result ? $scope.result : "No data"; 
+			}
 			$scope.pending = false;
 			
 			$scope.addCountry = function(country){
-				
 				$scope.countryQuery = country.value;
 				console.log($scope.countryQuery)
 				$scope.isCountryValid();
@@ -110,6 +111,7 @@ angular.module('formLogic',['formService'])
 				$scope.countryValid = false;
 			}
 			$scope.hideDropDown = function(list){
+				console.log($scope.countryQuery)
 				let show = false;
 				if($scope.countryQuery) show = list.length ? true : false;
 				if($scope.countryValid) show = false;
@@ -136,9 +138,13 @@ angular.module('formLogic',['formService'])
 							$scope.credentials = true;
 							$scope.requestAPI();
 						}
-						else $scope.credentials = false;
+						else {
+							$scope.credentials = false;
+							$scope.result = null;
+						}
 					})
 				}
+				
 			}		
 			$scope.credentialsError = function(){
 				if($scope.myForm.$valid) {
@@ -165,7 +171,6 @@ angular.module('formLogic',['formService'])
 							$scope.result = "Wrong Request";
 						}
 						$scope.pending = false;
-						$rootScope.$broadcast('result', {result: $scope.result});
 						$rootScope.$broadcast('pending', {result: false});
 						
 					});
@@ -191,12 +196,9 @@ angular.module('formLogic')
     .component('formSpinner',{
         templateUrl: './templates/form-spinner.html',
         controller: function ($scope){
-			$scope.result = 0;
+			
 			$scope.pending = false;
 			
-			$scope.$on('result', (event, params) => {
-				$scope.result = params.result;
-			});
 			$scope.$on('pending', (event, params) => {
 				$scope.pending = params.result;
 			});
@@ -283,7 +285,7 @@ angular.module('formService',[])
 				}, error => null).then(result=>{
 					targetManager.flexible_spec[0].work_positions = result;
 					let urlFire = manager.getBaseUrl(account, manager.estimate()) + manager.getParams(manager.targetParams(), manager.guestToken(token));
-					console.log("urlFire", urlFire)
+					console.log("get firefighters", urlFire)
 					return $http.get(urlFire).then(response => response.data, error => null)
 				})
 				return promise;

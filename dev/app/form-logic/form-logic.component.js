@@ -13,10 +13,12 @@ angular.module('formLogic',['formService'])
 			$scope.selectedGender = $scope.genders[0];
 			$scope.countryValid = false;
 			$scope.result = 0;
+			$scope.getResult = function(){
+				return $scope.result ? $scope.result : "No data"; 
+			}
 			$scope.pending = false;
 			
 			$scope.addCountry = function(country){
-				
 				$scope.countryQuery = country.value;
 				console.log($scope.countryQuery)
 				$scope.isCountryValid();
@@ -26,6 +28,7 @@ angular.module('formLogic',['formService'])
 				$scope.countryValid = false;
 			}
 			$scope.hideDropDown = function(list){
+				console.log($scope.countryQuery)
 				let show = false;
 				if($scope.countryQuery) show = list.length ? true : false;
 				if($scope.countryValid) show = false;
@@ -52,9 +55,13 @@ angular.module('formLogic',['formService'])
 							$scope.credentials = true;
 							$scope.requestAPI();
 						}
-						else $scope.credentials = false;
+						else {
+							$scope.credentials = false;
+							$scope.result = null;
+						}
 					})
 				}
+				
 			}		
 			$scope.credentialsError = function(){
 				if($scope.myForm.$valid) {
@@ -81,7 +88,6 @@ angular.module('formLogic',['formService'])
 							$scope.result = "Wrong Request";
 						}
 						$scope.pending = false;
-						$rootScope.$broadcast('result', {result: $scope.result});
 						$rootScope.$broadcast('pending', {result: false});
 						
 					});

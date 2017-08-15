@@ -1,5 +1,6 @@
 * {
-  font-family: Inconsolata,"Helvetica Neue", Helvetica, Arial, sans-serif; }
+  font-family: Inconsolata,"Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px; }
 
 p {
   margin: 5px; }
@@ -11,7 +12,7 @@ ul {
   padding: 0;
   background-color: white;
   border: 1px solid #cccccc;
-  width: 150px; }
+  width: 200px; }
   ul li:hover {
     background-color: #cccccc;
     cursor: pointer; }
@@ -28,21 +29,11 @@ form {
   form input {
     box-sizing: border-box;
     padding-right: 18px;
-    width: 150px; }
+    width: 100%; }
   form select {
-    min-width: 58px; }
+    min-width: 83px; }
   form label {
     margin: 0 5px; }
-  form button {
-    padding: 5px;
-    color: white;
-    background-color: rgba(52, 152, 52, 0.7);
-    margin: 5px 5px;
-    border-radius: 5px; }
-    form button:hover {
-      background-color: #4baf50; }
-    form button:disabled {
-      background: #cccccc; }
   form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) {
     position: relative;
     display: flex;
@@ -50,14 +41,14 @@ form {
     justify-content: flex-end;
     margin-bottom: 5px; }
     form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div {
-      width: 150px; }
+      width: 200px; }
       form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div #token, form > div:not(#country-container):not(#country-list):not(#gendre):not(#country-input) > div #account {
         width: 100%; }
   form #country-container {
     position: relative;
     display: flex;
     flex-flow: column wrap;
-    width: 150px;
+    width: 200px;
     margin-bottom: 5px; }
     form #country-container #country-list {
       position: absolute;
@@ -70,59 +61,50 @@ form {
       justify-content: flex-start;
       z-index: 9999; }
   form #age-range {
+    margin-bottom: 5px;
     position: relative;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    min-width: 150px; }
+    min-width: 200px; }
   form #gendre {
     position: relative;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    width: 150px; }
-  form .error {
-    font-size: 10px;
-    color: red; }
+    width: 200px; }
+  form #req-results {
+    display: inline-flex; }
+  form .error-container {
+    height: 10px; }
+    form .error-container .error {
+      font-size: 12px;
+      color: red; }
   form .reset-input {
     display: block;
     cursor: pointer;
     position: absolute;
-    right: 2px;
-    top: 2px;
+    right: 3px;
+    top: 3px;
     width: 16px;
     height: 16px;
     background: url(//yastatic.net/islands/_/nJL92_8XGrQ8WN7LePOnzmpHzd4.svg) no-repeat 0 0;
     opacity: 0.3; }
     form .reset-input:hover {
       opacity: 0.5; }
-
-@media screen and (max-width: 500px) {
-  /* Mobile styles */
-  .container {
-    position: relative;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center; } }
-
-@media screen and (min-width: 501px) and (max-width: 999px) {
-  /* Tablet styles */
-  .container {
-    position: relative;
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center; } }
-
-@media screen and (min-width: 1000px) {
-  /* Desktop styles */
-  .container {
-    position: relative;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center; } }
+  @supports (-ms-ime-align: auto) {
+    form input {
+      box-sizing: border-box;
+      padding-right: 0;
+      margin-right: 18px;
+      width: 100%; }
+    form .reset-input {
+      width: 0;
+      height: 0; } }
 
 .spinner-container {
-  display: inline-flex; }
+  display: inline-flex;
+  margin-left: 5px; }
   .spinner-container .spinner {
     margin: 0 2px;
     height: 18px;
@@ -162,3 +144,27 @@ form {
   20% {
     transform: scaleY(0.9);
     -webkit-transform: scaleY(0.9); } }
+
+@media screen and (max-width: 500px) {
+  /* Mobile styles */
+  .container {
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center; } }
+
+@media screen and (min-width: 501px) and (max-width: 999px) {
+  /* Tablet styles */
+  .container {
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center; } }
+
+@media screen and (min-width: 1000px) {
+  /* Desktop styles */
+  .container {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center; } }

@@ -1,6 +1,6 @@
 <div>
     <form name="myForm" autocomplete="off">
-			<div><label class="error">{{credentialsError()}}</label></div>
+			<div class="error-container"><label class="error" >{{credentialsError()}}</label></div>
             <div><label>Account token:</label><div><input type="text" id="token" ng-change="onChange()" ng-model="formData.token"  required><a  ng-show="formData.token" class="reset-input"  ng-click="formData.token = null"></a></div></div>
 			<div><label>Ad account:</label><div><input type="text" id="account" ng-change="onChange()" ng-model="formData.account" required><a  ng-show="formData.account" class="reset-input"  ng-click="formData.account = null"></a></div></div>
 			<div>
@@ -27,7 +27,7 @@
 					</select>
 				</div>
 			</div>
-			<div id="req-results"> <label>Results:</label><div><form-spinner></form-spinner></div></div>
+			<div > <label>Results:</label><div id="req-results"><span id="result"  ng-if="!pending">{{getResult()}}</span><form-spinner></form-spinner></div></div>
     </form>
 	
 </div>
